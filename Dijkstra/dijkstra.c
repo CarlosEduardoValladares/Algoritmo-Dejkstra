@@ -238,13 +238,16 @@ int main()
 	
 	unsigned int n = 5;
 	unsigned int adjacencias[n][n];
+	unsigned int raiz = 1;
 	
 	matriz_de_arquivo(n, adjacencias, "grafoGerado.txt");
 	
 	imprime_matriz(n, adjacencias);
 	
 	unsigned int vetorCaminho[n];
-	menorCaminho(n, 0, adjacencias, vetorCaminho);
+	vetorCaminho[raiz] = raiz;
+	
+	menorCaminho(n, raiz, adjacencias, vetorCaminho);
 	 
 	int i;
 	for(i = 0; i < n; i++){

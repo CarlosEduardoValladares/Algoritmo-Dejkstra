@@ -134,7 +134,7 @@ int pop(unsigned int n, unsigned int* cabeca, unsigned int* cauda, unsigned int 
 	return retorno;
 }
 
-void testaPesos(unsigned int n, unsigned int raiz, unsigned int matriz[n][n], int pesosNos[n]){
+void testaPesos(unsigned int n, unsigned int raiz, unsigned int matriz[n][n], int pesosNos[n], int caminho[n]){
 	
 	int i;
 	for (i = 0; i < n; i++){
@@ -142,7 +142,8 @@ void testaPesos(unsigned int n, unsigned int raiz, unsigned int matriz[n][n], in
 		if(matriz[raiz][i] != 0 && matriz[raiz][i] + pesosNos[raiz]  < pesosNos[i]){
 		
 			pesosNos[i] = matriz[raiz][i] + pesosNos[raiz];
-					
+			caminho[i] = raiz;
+								
 		}		
 	
 	}
@@ -151,10 +152,10 @@ void testaPesos(unsigned int n, unsigned int raiz, unsigned int matriz[n][n], in
 
 }
 
-void menorCaminho(unsigned int n, unsigned int raiz, unsigned int matriz[n][n], unsigned int destino, unsigned int caminho[n]){
+void menorCaminho(unsigned int n, unsigned int raiz, unsigned int matriz[n][n], unsigned int caminho[n]){
 
 	int visitados[n];
-	int pesosSomar[n];
+	// int pesosSomar[n];
 	
 	int i;
 	for (i = 0; i < n; i++){
@@ -179,39 +180,52 @@ void menorCaminho(unsigned int n, unsigned int raiz, unsigned int matriz[n][n], 
 	
 	}
 	
-	int posicaoAtual = raiz;
+	// int posicaoAtual = raiz;
 	
-	i = -1;
-	while (posicaoAtual != destino){
+	// i = -1;
+	int tudoVisitado = 0;
 	
-		i++;
-		testaPesos(n, raiz, matriz, pesosNos);
+	while (tudoVisitado != 1){
+	
+		// i++;
+		testaPesos(n, raiz, matriz, pesosNos, caminho);
 		
 		int menor = 999999;
 		int indice;
 		
+		visitados[raiz] = 1;
+		
 		int j;
 		for(j = 0; j < n; j++){
 			
-			if (pesosNos[j] < menor && visitados[j] == 0){
+			if (pesosNos[j] < menor && visitados[j] == 0 ){
 				
 				menor = pesosNos[j];
 				indice = j;
 				
 			}
 			
+		}
+		
+		// pesosSomar[i] = menor;
+		
+		raiz = indice;		
+		
+		// posicaoAtual = raiz;
+		
+		for(j = 0; j < n; j++){
+		
+			if (visitados[j] == 0){
+			
+				break;
+			
+			} else {
+				
+				tudoVisitado = 1;
+				
+			}			
+		
 		}		
-		
-		int indice_visitado = raiz;
-		visitados[indice_visitado] = 1;
-		
-		pesosSomar[i] = menor;
-		
-		raiz = indice;
-		caminho[i] = indice;
-		
-		posicaoAtual = raiz;
-		
 	
 	}
 	
@@ -230,7 +244,7 @@ int main()
 	imprime_matriz(n, adjacencias);
 	
 	unsigned int vetorCaminho[n];
-	menorCaminho(n, 1, adjacencias, 3, vetorCaminho);
+	menorCaminho(n, 0, adjacencias, vetorCaminho);
 	 
 	int i;
 	for(i = 0; i < n; i++){
